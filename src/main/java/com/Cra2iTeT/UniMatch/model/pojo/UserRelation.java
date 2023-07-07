@@ -24,4 +24,5 @@ public class UserRelation {
     private Long userOneId;
     private Long userTwoId;
     private Integer isDeleted;
+    // TODO 建立UserId的联合索引
 }

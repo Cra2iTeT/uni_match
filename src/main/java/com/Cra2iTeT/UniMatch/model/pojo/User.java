@@ -32,4 +32,6 @@ public class User implements Serializable {
     private Integer userRole;
     private String tags;
     private Integer isDeleted;
+
+    // TODO 建立account索引
 }

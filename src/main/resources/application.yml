@@ -9,9 +9,9 @@ spring:
       matching-strategy: ant-path-matcher
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.130.55.227:3306/uni_match?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&allowMultiQueries=true
-    username: root
-    password: L1tTlE.=-alimysql
+    url: jdbc:mysql://{ip}:3306/uni_match?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&allowMultiQueries=true
+    username: Cra2iTeT
+    password: L1tTlE+++
 #  rabbitmq:
 #    host: 192.168.150.13
 #    port: 5672

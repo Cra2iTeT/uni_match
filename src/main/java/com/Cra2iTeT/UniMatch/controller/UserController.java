@@ -1,18 +1,17 @@
 package com.Cra2iTeT.UniMatch.controller;
 
 import cn.hutool.core.util.IdUtil;
-import com.Cra2iTeT.UniMatch.common.LoginUserHolder;
 import com.Cra2iTeT.UniMatch.common.code.SystemCode;
 import com.Cra2iTeT.UniMatch.common.code.UserCode;
-import com.Cra2iTeT.UniMatch.model.dto.TagsTO;
 import com.Cra2iTeT.UniMatch.model.dto.UserLoginTO;
 import com.Cra2iTeT.UniMatch.model.dto.UserRegTO;
 import com.Cra2iTeT.UniMatch.model.vo.R;
 import com.Cra2iTeT.UniMatch.model.vo.UserVo;
 import com.Cra2iTeT.UniMatch.service.IUserService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Cra2iTeT
@@ -46,13 +45,14 @@ public class UserController {
             res.setCode(SystemCode.LOGIN_FAIL.getCode());
             res.setMsg(SystemCode.LOGIN_FAIL.getMsg());
             return res;
+        } else {
+            String token = IdUtil.simpleUUID();
+            userVo.setToken(token);
+            userService.saveUserLoginToken(token, userVo);
+            res.setCode(SystemCode.LOGIN_SUCCESS.getCode());
+            res.setMsg(SystemCode.LOGIN_SUCCESS.getMsg());
+            res.setData(userVo);
         }
-        String token = IdUtil.simpleUUID();
-        userVo.setToken(token);
-        userService.saveUserLoginToken(token, userVo);
-        res.setCode(SystemCode.LOGIN_SUCCESS.getCode());
-        res.setMsg(SystemCode.LOGIN_SUCCESS.getMsg());
-        res.setData(userVo);
         return res;
     }
 
@@ -62,21 +62,21 @@ public class UserController {
             res.setCode(SystemCode.REG_CODE_ERROR.getCode());
             res.setMsg(SystemCode.REG_CODE_ERROR.getMsg());
             return res;
+        } else {
+            if (userService.isUserExisted(flag, userRegTO)) {
+                res.setCode(SystemCode.REG_USER_EXISTED.getCode());
+                res.setMsg(SystemCode.REG_USER_EXISTED.getMsg());
+            } else {
+                if (userService.generateNewUser(flag, userRegTO)) {
+                    res.setCode(SystemCode.REG_FAIL.getCode());
+                    res.setMsg(SystemCode.REG_FAIL.getMsg());
+                } else {
+
+                    res.setCode(SystemCode.REG_SUCCESS.getCode());
+                    res.setMsg(SystemCode.REG_SUCCESS.getMsg());
+                }
+            }
         }
-        boolean isUserExisted = userService.isUserExisted(flag, userRegTO);
-        if (isUserExisted) {
-            res.setCode(SystemCode.REG_USER_EXISTED.getCode());
-            res.setMsg(SystemCode.REG_USER_EXISTED.getMsg());
-            return res;
-        }
-        boolean isRegSuccess = userService.generateNewUser(flag, userRegTO);
-        if (!isRegSuccess) {
-            res.setCode(SystemCode.REG_FAIL.getCode());
-            res.setMsg(SystemCode.REG_FAIL.getMsg());
-            return res;
-        }
-        res.setCode(SystemCode.REG_SUCCESS.getCode());
-        res.setMsg(SystemCode.REG_SUCCESS.getMsg());
         return res;
     }
 }

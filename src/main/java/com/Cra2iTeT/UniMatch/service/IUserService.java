@@ -24,5 +24,5 @@ public interface IUserService extends IService<User> {
 
     void userTags(TagsTO tagsTO);
 
-    boolean isExistedAndNotFollow(Long id, Long userId);
+    boolean isUserExisted(Long userId);
 }

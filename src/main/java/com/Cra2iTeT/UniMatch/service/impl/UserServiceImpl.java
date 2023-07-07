@@ -102,8 +102,9 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
     }
 
     @Override
-    public boolean isExistedAndNotFollow(Long id, Long userId) {
-
-        return false;
+    public boolean isUserExisted(Long userId) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getId, userId);
+        return count(wrapper) == 0;
     }
 }
