@@ -23,4 +23,6 @@ public interface IUserService extends IService<User> {
     void saveUserLoginToken(String token, UserVo userVo);
 
     void userTags(TagsTO tagsTO);
+
+    boolean isExistedAndNotFollow(Long id, Long userId);
 }

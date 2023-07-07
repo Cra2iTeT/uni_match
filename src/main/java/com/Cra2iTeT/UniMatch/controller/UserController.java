@@ -29,18 +29,18 @@ public class UserController {
     }
 
     @PostMapping("/email")
-    public R regByEmail(@RequestBody UserRegTO userRegTO) {
+    public R<Object> regByEmail(@RequestBody UserRegTO userRegTO) {
         return reg(UserCode.REG_FLAG_EMAIL, userRegTO);
     }
 
     @PostMapping("/phone")
-    public R regByPhone(@RequestBody UserRegTO userRegTO) {
+    public R<Object> regByPhone(@RequestBody UserRegTO userRegTO) {
         return reg(UserCode.REG_FLAG_PHONE, userRegTO);
     }
 
     @PostMapping("/login")
-    public R login(@RequestBody UserLoginTO userLoginTO) {
-        R res = new R<>();
+    public R<UserVo> login(@RequestBody UserLoginTO userLoginTO) {
+        R<UserVo> res = new R<>();
         UserVo userVo = userService.login(userLoginTO);
         if (userVo == null) {
             res.setCode(SystemCode.LOGIN_FAIL.getCode());
@@ -56,29 +56,8 @@ public class UserController {
         return res;
     }
 
-    @PostMapping("/tags")
-    public R userTags(@RequestBody TagsTO tagsTO) {
-        R res = new R();
-        boolean isLocalLoginUser = Objects.equals(LoginUserHolder.get().getId(), tagsTO.getUserId());
-        if (!isLocalLoginUser) {
-            res.setCode(SystemCode.VALID_USER.getCode());
-            res.setMsg(SystemCode.VALID_USER.getMsg());
-            return res;
-        }
-        userService.userTags(tagsTO);
-        res.setCode(SystemCode.TAGS_SUCCESS.getCode());
-        res.setMsg(SystemCode.TAGS_SUCCESS.getMsg());
-        return res;
-    }
-
-    @PostMapping("/follow/{id}")
-    public R followUser(@PathVariable("id") Long userId) {
-        // TODO 创建好友表
-        boolean isExistedAndNotFollow = userService.isExistedAndNotFollow(LoginUserHolder.get().getId(), userId);
-    }
-
-    private R reg(boolean flag, UserRegTO userRegTO) {
-        R res = new R<>();
+    private R<Object> reg(boolean flag, UserRegTO userRegTO) {
+        R<Object> res = new R<>();
         if (userService.isRegCodeCorrect(userRegTO.getEmail(), userRegTO.getCode())) {
             res.setCode(SystemCode.REG_CODE_ERROR.getCode());
             res.setMsg(SystemCode.REG_CODE_ERROR.getMsg());

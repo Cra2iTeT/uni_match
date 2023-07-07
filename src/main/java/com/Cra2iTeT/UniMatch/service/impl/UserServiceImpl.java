@@ -100,4 +100,10 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
                 .eq(User::getId, tagsTO.getUserId());
         update(wrapper);
     }
+
+    @Override
+    public boolean isExistedAndNotFollow(Long id, Long userId) {
+
+        return false;
+    }
 }
