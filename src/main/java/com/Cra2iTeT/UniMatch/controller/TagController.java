@@ -1,17 +1,13 @@
 package com.Cra2iTeT.UniMatch.controller;
 
-import com.Cra2iTeT.UniMatch.common.LoginUserHolder;
 import com.Cra2iTeT.UniMatch.common.code.SystemCode;
 import com.Cra2iTeT.UniMatch.common.code.TagCode;
 import com.Cra2iTeT.UniMatch.model.dto.TagsTO;
 import com.Cra2iTeT.UniMatch.model.vo.R;
 import com.Cra2iTeT.UniMatch.service.ITagService;
 import com.Cra2iTeT.UniMatch.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 /**
  * @author Cra2iTeT

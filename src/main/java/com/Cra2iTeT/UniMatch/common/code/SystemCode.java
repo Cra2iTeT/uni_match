@@ -35,8 +35,8 @@ public enum SystemCode {
 
     ERROR(401, "Error");
 
-    private int code;
-    private String msg;
+    private final int code;
+    private final String msg;
 
     SystemCode(int code, String msg) {
         this.code = code;

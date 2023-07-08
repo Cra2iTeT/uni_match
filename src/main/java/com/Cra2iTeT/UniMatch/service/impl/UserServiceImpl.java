@@ -108,10 +108,9 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
 
     @Override
     public void setUserTags(TagsTO tagsTO) {
-        List<Long> tagIds = tagsTO.getTagsIds();
         LambdaQueryWrapper<Tag> tagLambdaQueryWrapper = new LambdaQueryWrapper<>();
         tagLambdaQueryWrapper.select(Tag::getId, Tag::getName)
-                .in(Tag::getId, tagsTO);
+                .in(Tag::getId, tagsTO.getTagsIds());
         StringBuilder sb = new StringBuilder();
         List<Tag> tags = tagService.list(tagLambdaQueryWrapper);
         for (Tag tag : tags) {

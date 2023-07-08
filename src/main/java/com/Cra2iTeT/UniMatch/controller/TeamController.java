@@ -4,8 +4,10 @@ import com.Cra2iTeT.UniMatch.common.code.SystemCode;
 import com.Cra2iTeT.UniMatch.model.dto.TeamTO;
 import com.Cra2iTeT.UniMatch.model.vo.R;
 import com.Cra2iTeT.UniMatch.service.ITeamService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Cra2iTeT
@@ -24,7 +26,7 @@ public class TeamController {
     @PostMapping()
     public R<Object> createNewTeam(@RequestBody TeamTO teamTO) {
         R<Object> res = new R<>();
-        if (teamService.createNewTeam(teamTO)){
+        if (teamService.createNewTeam(teamTO)) {
             res.setCode(SystemCode.TAGS_SUCCESS.getCode());
             res.setMsg(SystemCode.TAGS_SUCCESS.getMsg());
         }

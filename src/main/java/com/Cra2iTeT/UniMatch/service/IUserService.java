@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IUserService extends IService<User> {
     boolean isUserExisted(boolean flag,UserRegTO userRegTO);
 
-    boolean isRegCodeCorrect(String account,String code);
+    boolean isRegCodeCorrect(String account, String code);
 
     boolean generateNewUser(boolean flag, UserRegTO userRegTO);
 
