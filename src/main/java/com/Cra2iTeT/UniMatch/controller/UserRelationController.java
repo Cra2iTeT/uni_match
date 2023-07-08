@@ -37,14 +37,14 @@ public class UserRelationController {
         return res;
     }
 
-    @PostMapping("/follow/{id}")
-    public R<Boolean> followUser(@PathVariable("id") Long userId) {
-        R<Boolean> res = new R<>();
+    @PostMapping("/{id}")
+    public R<Object> followUser(@PathVariable("id") Long userId) {
+        R<Object> res = new R<>();
         if (!userRelationService.isNotFollow(userId)) {
             res.setCode(SystemCode.RELATION_IS_FOLLOWED.getCode());
             res.setMsg(SystemCode.RELATION_IS_FOLLOWED.getMsg());
         } else {
-            if (!userService.isUserExisted(userId)) {
+            if (userService.isUserExisted(userId)) {
                 res.setCode(SystemCode.USER_NOT_EXISTED.getCode());
                 res.setMsg(SystemCode.USER_NOT_EXISTED.getMsg());
             } else {
@@ -61,13 +61,13 @@ public class UserRelationController {
     }
 
     @PostMapping("/unFollow/{id}")
-    public R<Boolean> unFollow(@PathVariable("id") Long userId) {
-        R<Boolean> res = new R<>();
+    public R<Object> unFollow(@PathVariable("id") Long userId) {
+        R<Object> res = new R<>();
         if (userRelationService.isNotFollow(userId)) {
             res.setCode(SystemCode.RELATION_NOT_FOLLOWED.getCode());
             res.setMsg(SystemCode.RELATION_NOT_FOLLOWED.getMsg());
         } else {
-            if (!userService.isUserExisted(userId)) {
+            if (userService.isUserExisted(userId)) {
                 res.setCode(SystemCode.USER_NOT_EXISTED.getCode());
                 res.setMsg(SystemCode.USER_NOT_EXISTED.getMsg());
             } else {
@@ -100,7 +100,7 @@ public class UserRelationController {
             res.setCode(SystemCode.RELATION_NOT_FAN.getCode());
             res.setMsg(SystemCode.RELATION_NOT_FAN.getMsg());
         } else {
-            if (!userService.isUserExisted(userId)) {
+            if (userService.isUserExisted(userId)) {
                 res.setCode(SystemCode.USER_NOT_EXISTED.getCode());
                 res.setMsg(SystemCode.USER_NOT_EXISTED.getMsg());
             } else {

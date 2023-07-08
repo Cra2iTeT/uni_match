@@ -3,23 +3,26 @@ package com.Cra2iTeT.UniMatch.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.DesensitizedUtil;
 import cn.hutool.core.util.IdUtil;
+import com.Cra2iTeT.UniMatch.common.LoginUserHolder;
 import com.Cra2iTeT.UniMatch.common.code.UserCode;
 import com.Cra2iTeT.UniMatch.mapper.IUserMapper;
 import com.Cra2iTeT.UniMatch.model.dto.TagsTO;
 import com.Cra2iTeT.UniMatch.model.dto.UserLoginTO;
 import com.Cra2iTeT.UniMatch.model.dto.UserRegTO;
+import com.Cra2iTeT.UniMatch.model.pojo.Tag;
 import com.Cra2iTeT.UniMatch.model.pojo.User;
 import com.Cra2iTeT.UniMatch.model.vo.UserVo;
+import com.Cra2iTeT.UniMatch.service.ITagService;
 import com.Cra2iTeT.UniMatch.service.IUserService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,8 +34,11 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    public UserServiceImpl(StringRedisTemplate stringRedisTemplate) {
+    private final ITagService tagService;
+
+    public UserServiceImpl(StringRedisTemplate stringRedisTemplate, ITagService tagService) {
         this.stringRedisTemplate = stringRedisTemplate;
+        this.tagService = tagService;
     }
 
     @Override
@@ -94,17 +100,25 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
     }
 
     @Override
-    public void userTags(TagsTO tagsTO) {
-        LambdaUpdateWrapper<User> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.set(User::getTags, tagsTO.getTags())
-                .eq(User::getId, tagsTO.getUserId());
-        update(wrapper);
-    }
-
-    @Override
     public boolean isUserExisted(Long userId) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getId, userId);
-        return count(wrapper) == 0;
+        return count(wrapper) != 0;
+    }
+
+    @Override
+    public void setUserTags(TagsTO tagsTO) {
+        List<Long> tagIds = tagsTO.getTagsIds();
+        LambdaQueryWrapper<Tag> tagLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        tagLambdaQueryWrapper.select(Tag::getId, Tag::getName)
+                .in(Tag::getId, tagsTO);
+        StringBuilder sb = new StringBuilder();
+        List<Tag> tags = tagService.list(tagLambdaQueryWrapper);
+        for (Tag tag : tags) {
+            sb.append(tag).append(";");
+        }
+        User user = getById(LoginUserHolder.get().getId());
+        user.setTags(sb.toString());
+        updateById(user);
     }
 }

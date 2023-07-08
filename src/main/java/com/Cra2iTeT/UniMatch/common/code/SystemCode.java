@@ -13,7 +13,6 @@ public enum SystemCode {
     LOGIN_FAIL(10010, "用户不存在或密码错误"),
     LOGIN_SUCCESS(10011, "登录成功"),
     USER_NOT_EXISTED(10012, "用户不存在或已注销"),
-    TAGS_SUCCESS(10020, "标签更改成功"),
     RELATION_SUCCESS(10040, "关注列表获取成功"),
     RELATION_IS_FOLLOWED(10041, "已经关注请勿重复关注"),
     RELATION_FOLLOW_SUCCESS(10042, "关注成功"),
@@ -23,7 +22,13 @@ public enum SystemCode {
     RELATION_UNFOLLOW_FAIL(10046, "取消关注失败"),
     RELATION_NOT_FAN(10047, "该用户非您粉丝"),
     RELATION_BLOCK_SUCCESS(10048, "已添加至黑名单"),
-    RELATION_BLOCK_FAIl(10048, "添加至黑名单失败"),
+    RELATION_BLOCK_FAIl(10049, "添加至黑名单失败"),
+    TAG_EXISTED(10060, "标签已存在"),
+    TAG_New_SUCCESS(10061, "新标签添加成功"),
+    TAG_NEW_FAIL(10062, "新标签添加失败"),
+    TAGS_SUCCESS(10063, "标签更改成功"),
+    TAGS_FAIL(10064, "标签更改失败"),
+
     VALID_USER(100, "非法用户请求"),
 
     SUCCESS(200, "Success"),

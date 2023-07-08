@@ -3,17 +3,22 @@ package com.Cra2iTeT.UniMatch.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Cra2iTeT
- * @since 2023/6/24 15:39
+ * @date 2023/7/8 16:50:24
+ * @description
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagsTO implements Serializable {
-    private List<Long> tagsIds;
+@ToString
+public class TeamTO implements Serializable {
+    private String name;
+    private List<Long> userIds;
+    private String description;
 }

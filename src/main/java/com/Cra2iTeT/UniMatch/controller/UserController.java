@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
     // TODO 用户基础功能 添加不同情况的参数校验
+    // TODO 用户举报，后台审核等
     private final IUserService userService;
 
     public UserController(IUserService userService) {

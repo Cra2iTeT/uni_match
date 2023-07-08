@@ -22,7 +22,7 @@ public interface IUserService extends IService<User> {
 
     void saveUserLoginToken(String token, UserVo userVo);
 
-    void userTags(TagsTO tagsTO);
-
     boolean isUserExisted(Long userId);
+
+    void setUserTags(TagsTO tagsTO);
 }

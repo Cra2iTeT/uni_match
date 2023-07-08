@@ -12,20 +12,18 @@ import java.io.Serializable;
 
 /**
  * @author Cra2iTeT
- * @since 2023/6/19 19:05
+ * @date 2023/7/8 15:59:33
+ * @description
  */
-@TableName("t_team")
+@TableName("t_tag")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Team implements Serializable {
+public class Tag implements Serializable {
     @TableId(type = IdType.INPUT)
     private Long id;
     private String name;
-    private String description;
-    private Long captain;
-    private Integer level;
-    private Integer maxNum;
+    private Long userId;
     private Integer isDeleted;
 }

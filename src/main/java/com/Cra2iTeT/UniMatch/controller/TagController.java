@@ -2,13 +2,14 @@ package com.Cra2iTeT.UniMatch.controller;
 
 import com.Cra2iTeT.UniMatch.common.LoginUserHolder;
 import com.Cra2iTeT.UniMatch.common.code.SystemCode;
+import com.Cra2iTeT.UniMatch.common.code.TagCode;
 import com.Cra2iTeT.UniMatch.model.dto.TagsTO;
 import com.Cra2iTeT.UniMatch.model.vo.R;
+import com.Cra2iTeT.UniMatch.service.ITagService;
 import com.Cra2iTeT.UniMatch.service.IUserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -20,27 +21,39 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/tag")
 public class TagController {
-
+    // TODO 引入本地缓存
     private final IUserService userService;
 
-    public TagController(IUserService userService) {
+    private final ITagService tagService;
+
+    private final StringRedisTemplate stringRedisTemplate;
+
+    public TagController(IUserService userService, ITagService tagService, StringRedisTemplate stringRedisTemplate) {
         this.userService = userService;
+        this.tagService = tagService;
+        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     @PostMapping("/user/tag")
     public R<Object> userTags(@RequestBody TagsTO tagsTO) {
         R<Object> res = new R<>();
-        if (!Objects.equals(LoginUserHolder.get().getId(), tagsTO.getUserId())) {
-            res.setCode(SystemCode.VALID_USER.getCode());
-            res.setMsg(SystemCode.VALID_USER.getMsg());
-            return res;
-        } else {
-            userService.userTags(tagsTO);
-            res.setCode(SystemCode.TAGS_SUCCESS.getCode());
-            res.setMsg(SystemCode.TAGS_SUCCESS.getMsg());
-        }
+        userService.setUserTags(tagsTO);
+        res.setCode(SystemCode.TAGS_SUCCESS.getCode());
+        res.setMsg(SystemCode.TAGS_SUCCESS.getMsg());
         return res;
     }
 
-    // TODO 创建新标签
+    @PostMapping("/{name}")
+    public R<Object> createTag(@PathVariable("name") String name) {
+        R<Object> res = new R<>();
+        if (Boolean.TRUE.equals(stringRedisTemplate.opsForSet().isMember(TagCode.tagKeyPrefix, name))) {
+            res.setCode(SystemCode.TAG_EXISTED.getCode());
+            res.setMsg(SystemCode.TAG_EXISTED.getMsg());
+        } else {
+            tagService.createNewTag(name);
+            res.setCode(SystemCode.TAG_New_SUCCESS.getCode());
+            res.setMsg(SystemCode.TAG_New_SUCCESS.getMsg());
+        }
+        return res;
+    }
 }
